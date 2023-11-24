@@ -1,7 +1,7 @@
 # Личный проект «Шесть городов»
 
-* Студент: [Неопознанный енот](https://up.htmlacademy.ru/nodejs-api-individual/1/user/2114641).
-* Наставник: `Неизвестно`.
+- Студент: [Александр Штыков](https://up.htmlacademy.ru/nodejs-api-individual/1/user/2114641).
+- Наставник: `Евгений Наумов`.
 
 ---
 
