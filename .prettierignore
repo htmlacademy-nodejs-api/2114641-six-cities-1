@@ -1,0 +1,4 @@
+node_modules/
+dist/
+markup/
+.prettierrc.js

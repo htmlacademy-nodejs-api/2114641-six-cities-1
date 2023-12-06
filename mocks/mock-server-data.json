@@ -1,0 +1,68 @@
+{
+  "api": {
+    "names": [
+      "Apartment",
+      "Apartment 2",
+      "Apartment 3",
+      "Apartment 4",
+      "Apartment 5",
+      "Apartment 6",
+      "Apartment 7",
+      "Apartment 8",
+      "Apartment 9"
+    ],
+    "createdBy": [
+      "snow@pisem.local",
+      "president@dka.local",
+      "fish@big.local",
+      "test@pisem.local",
+      "freedom@pisem.local",
+      "rolan@pochta.local",
+      "author@mir.local",
+      "test@lost.loca",
+      "kujo-fan@story.local"
+    ],
+    "description": [
+      "Riverfront Lodging on The Fall River, centrally located between Estes Park and Rocky Mountain National Park. We offer 1&2 bedroom condos that provide all the comforts of home while you are visiting. Our amenities include, full kitchens (Stove, refrigerator, microwave, dishwasher), king size beds, wood burning fireplaces, free Wifi, Shared Hot Tub and guest laundry Facilities on site.",
+      "Beautifully renovated boutique hotel suite in the highly desirable Mid Beach area. This suite is situated in one block away from the beach and it offers a private and quiet accommodation for vacationers and business travelers. The unit features a comfortable king-sized bed, Cable Tv, Mini fridge and central AC. Indulge in Miami Beach with warm weather all year long.",
+      "Fully renovated and refurbished studio with the most amazing view of the Eiffel Tower and most Parisian monuments. Wake up to the breathtaking sight of the Eiffel Tower right from your queen-size bed. The large French windows and the balcony make the experience even more memorable. The studio is located 10 min walk from the Eiffel Tower and 4 min walk from Metro stations. The building is safe, and there are plenty of shops and restaurants in the neighborhood. High speed broadband and NETFLIX.",
+      "Cosy studio (27 sqm) in an lively and cosmopolite neighbourhood located in the north center of Paris, in a building from 18th century. The place is quiet as the studio is on the courtyard side, on the 1st floor (2nd floor for US) The studio was fully renovated in March 2019.",
+      "This renovated and licensed B&B is set on Amsterdam's oldest canal in the beautiful center of Amsterdam. The bedrooms are quiet and full of charm. Dam square, the Royal Palace and the bustling red light district all within a minute's walk. Perfectly positioned to explore all the wonders Amsterdam has to offer. The spacious room is located at the quiet back of the building, situated around a court yard. The bathroom is shared with 1 other room in the BnB.The rooms have an iron + hairdryer.",
+      "Located in the historical city centre & only a brief stroll away from the famous Grand-Place, you will have easy access to landmarks and stations! Situated in a traditional Brussels townhouse from the 1890's, the apartment was recently renovated to a high quality finish, so you'll find everything that you might expect and more! Light, trendy and most importantly - comfortable with all the amenities you would need. The cherry on top? A beautiful rooftop terrace to enjoy your morning coffee!",
+      "Welcome to a spacious apartment located in an old Brussels townhouse with large windows and lots of light in the centre of Brussels.As the centre of European culture and institutions, Brussels has much more to offer than most people imagine. Apart from its famous chocolates and beers, there are almost 90 museums, beautiful parks, architecture, bars and much more.",
+      "Welcome and thank you for interest! You book a cozy flat at the popular belgian quarter in the middle of Cologne. Great double-bed I HighSpeed WiFi I Fresh Towels I FLAT TV 50' I Free Coffee & Tea I 'Cologne-Atmosphere' I Easy access to the Recording & Rehearsal-Studios (bookable separately by inquiry).1 parking lot can generally be booked additionally. With additional costs. More informations on request",
+      "My place is close to the Reeperbahn, with many bars, pubs, theatres and musicals. Restaurants, cafes and shopping are also within walking distance. The famous ski jumping area and the harbour as well. You'll love my place because of the great views to Michel, the Reeperbahn, the harbor and the Elbe Philharmonic. The unique location in the middle of the scene is unbeatable. My place is good for couples, solo travelers, adventurers, and business travelers."
+    ],
+    "city": ["Paris", "Cologne", "Brussels", "Amsterdam", "Hamburg", "Dusseldorf"],
+    "preview": [
+      "preview1.jpg",
+      "preview2.jpg",
+      "preview3.jpg",
+      "preview4.jpg",
+      "preview5.jpg",
+      "preview6.jpg",
+      "preview7.jpg",
+      "preview8.jpg",
+      "preview9.jpg"
+    ],
+    "photos": ["photo1.jpg", "photo2.jpg", "photo3.jpg", "photo4.jpg", "photo5.jpg", "photo6.jpg"],
+    "propertyType": ["apartment", "house", "room", "hotel"],
+    "location": [
+      "48.85661;2.351499",
+      "50.938361;6.959974",
+      "50.846557;4.351697",
+      "52.370216;4.895168",
+      "53.550341;10.000654",
+      "51.225402;6.776314"
+    ],
+    "amenities": [
+      "Breakfast",
+      "AirConditioning",
+      "Laptop friendly workspace",
+      "Baby seat",
+      "Washer",
+      "Towels",
+      "Fridge"
+    ]
+  }
+}
