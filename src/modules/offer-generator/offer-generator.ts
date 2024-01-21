@@ -1,14 +1,13 @@
-import dayjs from 'dayjs';
 import { OfferGeneratorInterface } from './offer-generator.interface.js';
 import { MockData } from '../../types/mock-data.type.js';
 import { generateRandomValue, getRandomItem, getRandomItems } from '../../core/helpers/index.js';
 import { Guests } from '../../types/guests.enum.js';
 import { Price } from '../../types/price.enum.js';
 import { Rating } from '../../types/rating.enum.js';
-import { Week } from '../../types/week.enum.js';
 import { Rooms } from '../../types/rooms.enum.js';
 
 export const FALSE_VALUE = '0';
+
 export default class OfferGenerator implements OfferGeneratorInterface {
   constructor(private readonly mockData: MockData) {}
 
@@ -22,7 +21,6 @@ export default class OfferGenerator implements OfferGeneratorInterface {
     const propertyType = getRandomItem<string>(this.mockData.propertyType);
     const location = getRandomItem<string>(this.mockData.location);
     const amenities = getRandomItems<string>(this.mockData.amenities).join(';');
-    const createdAt = dayjs().subtract(generateRandomValue(Week.FirstDay, Week.LastDay), 'day').toISOString();
     const favorite = FALSE_VALUE;
     const premium = generateRandomValue(0, 1).toString();
     const rating = generateRandomValue(Rating.Min, Rating.Max, 1).toString();
@@ -34,7 +32,6 @@ export default class OfferGenerator implements OfferGeneratorInterface {
     return [
       name,
       description,
-      createdAt,
       city,
       preview,
       photos,
