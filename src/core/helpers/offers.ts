@@ -1,12 +1,11 @@
-import { RentalOffer } from '../../types/rental-offer.type';
+import { Offer } from '../../types/offer.type';
 import { PropertyType } from '../../types/property.enum';
 import { Amenity } from '../../types/amenity.enum';
 
-export function createOffer(offerData: string): RentalOffer {
+export function createOffer(offerData: string): Offer {
   const [
     name,
     description,
-    createdAt,
     city,
     preview,
     photos,
@@ -26,7 +25,6 @@ export function createOffer(offerData: string): RentalOffer {
   return {
     name,
     description,
-    createdAt: new Date(createdAt),
     city,
     preview,
     photos: photos.split(';'),
@@ -37,7 +35,6 @@ export function createOffer(offerData: string): RentalOffer {
     numberOfGuests: Number.parseInt(numberOfGuests, 10),
     coast: Number.parseFloat(coast),
     propertyType: propertyType as PropertyType,
-    createdBy,
     commentsCount: Number.parseInt(commentsCount, 10),
     location: (() => {
       const [latitude, longitude] = location.split(';');
@@ -48,5 +45,10 @@ export function createOffer(offerData: string): RentalOffer {
       };
     })(),
     amenities: amenities.split(';') as Amenity[],
+    user: {
+      email: createdBy,
+      name: createdBy.split('@')[0],
+      picture: 'pic.jpg',
+    },
   };
 }

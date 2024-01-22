@@ -1,11 +1,11 @@
 import { Amenity } from './amenity.enum';
 import { Location } from './location.type';
 import { PropertyType } from './property.enum';
+import { User } from './user.type.js';
 
-export type RentalOffer = {
+export type Offer = {
   name: string;
   description: string;
-  createdAt: Date;
   city: string;
   preview: string;
   photos: string[];
@@ -16,8 +16,8 @@ export type RentalOffer = {
   numberOfGuests: number;
   coast: number;
   propertyType: PropertyType;
-  createdBy: string;
   commentsCount: number;
   location: Location;
   amenities: Amenity[];
-}
+  user: User;
+};
