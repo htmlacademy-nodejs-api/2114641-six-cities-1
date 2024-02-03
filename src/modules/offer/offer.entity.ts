@@ -3,6 +3,7 @@ import { PropertyType } from '../../types/property.enum.js';
 import { Location } from '../../types/location.type.js';
 import { Amenity } from '../../types/amenity.enum.js';
 import { UserEntity } from '../user/user.entity.js';
+import { Rating } from '../../types/rating.enum.js';
 
 const { prop, modelOptions } = typegoose;
 
@@ -35,7 +36,7 @@ export class OfferEntity extends defaultClasses.TimeStamps {
   @prop({ default: false })
   public favorite!: boolean;
 
-  @prop({ default: 0 })
+  @prop({ required: true, min: Rating.Min, max: Rating.Max })
   public rating!: number;
 
   @prop({ required: true })
