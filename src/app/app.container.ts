@@ -8,6 +8,8 @@ import { RestSchema } from '../core/config/rest.schema.js';
 import { ConfigService } from '../core/config/config.service.js';
 import { DatabaseClientInterface } from '../core/database-client/database-client.interface.js';
 import { MongoClientService } from '../core/database-client/mongo-client.service.js';
+import { ExceptionFilterInterface } from '../core/expception-filters/exception-filter.interface.js';
+import { ExceptionFilter } from '../core/expception-filters/exception-filter.js';
 
 export function createApplicationContainer() {
   const restApplicationContainer = new Container();
@@ -20,6 +22,10 @@ export function createApplicationContainer() {
   restApplicationContainer
     .bind<DatabaseClientInterface>(AppComponent.DatabaseClientInterface)
     .to(MongoClientService)
+    .inSingletonScope();
+  restApplicationContainer
+    .bind<ExceptionFilterInterface>(AppComponent.ExceptionFilterInterface)
+    .to(ExceptionFilter)
     .inSingletonScope();
 
   return restApplicationContainer;
