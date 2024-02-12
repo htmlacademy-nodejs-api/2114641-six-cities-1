@@ -15,7 +15,6 @@ export class UpdateOfferDto {
   public numberOfGuests!: number;
   public coast!: number;
   public propertyType!: PropertyType;
-  public commentsCount!: number;
   public location!: Location;
   public amenities!: Amenity[];
 }

@@ -23,6 +23,23 @@ export class OfferService implements OfferServiceInterface {
     return result;
   }
 
+  public async findPremiumByCity(city: string): Promise<DocumentType<OfferEntity>[]> {
+    return await this.offerModel
+      .aggregate([
+        {
+          $match: {
+            city: {
+              $eq: city,
+            },
+            premium: {
+              $eq: true,
+            },
+          },
+        },
+      ])
+      .exec();
+  }
+
   public async findById(id: string): Promise<DocumentType<OfferEntity> | null> {
     return await this.offerModel.findById(id).populate(['userId', 'comments']).exec();
   }
@@ -41,6 +58,10 @@ export class OfferService implements OfferServiceInterface {
     this.logger.info(`Offer ${result?.id} updated`);
 
     return result;
+  }
+
+  public async toggleFavorite(offerId: string): Promise<DocumentType<OfferEntity> | null> {
+    return await this.offerModel.findByIdAndUpdate(offerId, { $set: { favorite: { $not: '$favorite' } } });
   }
 
   public async incCommentCount(offerId: string): Promise<DocumentType<OfferEntity> | null> {
