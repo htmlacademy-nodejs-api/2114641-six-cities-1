@@ -13,12 +13,14 @@ import { HttpError } from '../../core/errors/http-error.js';
 import { StatusCodes } from 'http-status-codes';
 import { OfferDetailsRdo } from './rdo/offer-details.rdo.js';
 import { OffersByCityParams, OfferDetailsParams } from './offer.controller.types.js';
+import { CommentServiceInterface } from '../comment/comment-service.interface.js';
 
 @injectable()
 export class OfferController extends Controller {
   constructor(
     @inject(AppComponent.LoggerInterface) protected readonly logger: LoggerInterface,
     @inject(AppComponent.OfferServiceInterface) private readonly offerService: OfferServiceInterface,
+    @inject(AppComponent.CommentServiceInterface) private readonly commentService: CommentServiceInterface,
   ) {
     super(logger);
 
@@ -30,7 +32,6 @@ export class OfferController extends Controller {
     this.addRoute({ path: '/:offerId', method: HttpMethod.Delete, handler: this.delete });
     this.addRoute({ path: '/:offerId', method: HttpMethod.Patch, handler: this.update });
     this.addRoute({ path: '/:city/premium', method: HttpMethod.Get, handler: this.findPremiumByCity });
-    this.addRoute({ path: '/:offerId/toggle-favorite', method: HttpMethod.Patch, handler: this.toggleFavoriteById });
   }
 
   public async index(_req: Request, res: Response): Promise<void> {
@@ -48,17 +49,6 @@ export class OfferController extends Controller {
     const result = await this.offerService.create(body);
 
     this.created(res, fillDTO(OfferRdo, result));
-  }
-
-  public async toggleFavoriteById({ params }: Request<OfferDetailsParams>, res: Response): Promise<void> {
-    const { offerId } = params;
-    const offer = await this.offerService.toggleFavorite(offerId);
-
-    if (!offer) {
-      throw new HttpError(StatusCodes.NOT_FOUND, `Offer with id ${offerId} not found.`, 'OfferController');
-    }
-
-    this.ok(res, fillDTO(OfferRdo, offer));
   }
 
   public async findPremiumByCity({ params }: Request<OffersByCityParams>, res: Response): Promise<void> {
@@ -79,6 +69,8 @@ export class OfferController extends Controller {
     if (!offer) {
       throw new HttpError(StatusCodes.NOT_FOUND, `Offer with id ${offerId} not found.`, 'OfferController');
     }
+
+    const rating = await this.commentService.getRatingByOfferId(offer.id);
 
     this.ok(res, fillDTO(OfferDetailsRdo, offer));
   }
