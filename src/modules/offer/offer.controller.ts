@@ -47,8 +47,10 @@ export class OfferController extends Controller {
     res: Response,
   ): Promise<void> {
     const result = await this.offerService.create(body);
+    const offer = await this.offerService.findById(result.id);
+    const rating = await this.commentService.getRatingByOfferId(result.id);
 
-    this.created(res, fillDTO(OfferRdo, result));
+    this.created(res, fillDTO(OfferRdo, { ...offer?.toObject(), rating }));
   }
 
   public async findPremiumByCity({ params }: Request<OffersByCityParams>, res: Response): Promise<void> {
@@ -56,9 +58,7 @@ export class OfferController extends Controller {
 
     const offers = await this.offerService.findPremiumByCity(city);
 
-    const offersToResponse = fillDTO(OfferRdo, offers);
-
-    this.ok(res, offersToResponse);
+    this.ok(res, fillDTO(OfferRdo, offers));
   }
 
   public async findById({ params }: Request<OfferDetailsParams>, res: Response): Promise<void> {
@@ -72,7 +72,7 @@ export class OfferController extends Controller {
 
     const rating = await this.commentService.getRatingByOfferId(offer.id);
 
-    this.ok(res, fillDTO(OfferDetailsRdo, offer));
+    this.ok(res, fillDTO(OfferDetailsRdo, { ...offer.toObject(), rating }));
   }
 
   public async delete({ params }: Request<OfferDetailsParams>, res: Response): Promise<void> {
@@ -96,6 +96,8 @@ export class OfferController extends Controller {
       throw new HttpError(StatusCodes.NOT_FOUND, `Offer with id ${params.offerId} not found.`, 'OfferController');
     }
 
-    this.ok(res, fillDTO(OfferRdo, updatedOffer));
+    const rating = await this.commentService.getRatingByOfferId(updatedOffer.id);
+
+    this.ok(res, fillDTO(OfferRdo, { ...updatedOffer.toObject(), rating }));
   }
 }

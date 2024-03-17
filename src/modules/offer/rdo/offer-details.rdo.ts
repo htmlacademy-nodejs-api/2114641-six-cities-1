@@ -51,6 +51,6 @@ export class OfferDetailsRdo {
   @Expose()
   public amenities!: Amenity[];
 
-  @Expose()
+  @Expose({ name: 'userId' })
   public userId!: string;
 }

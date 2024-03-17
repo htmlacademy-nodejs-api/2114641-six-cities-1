@@ -37,12 +37,46 @@ export class OfferService implements OfferServiceInterface {
             },
           },
         },
+        {
+          $lookup: {
+            from: 'comments',
+            let: {
+              offerId: '$_id',
+            },
+            pipeline: [
+              {
+                $match: {
+                  $expr: {
+                    $eq: ['$$offerId', '$offerId'],
+                  },
+                },
+              },
+              {
+                $project: {
+                  _id: 1,
+                  rating: 1,
+                },
+              },
+            ],
+            as: 'comments',
+          },
+        },
+        {
+          $addFields: {
+            rating: {
+              $avg: '$comments.rating',
+            },
+          },
+        },
+        {
+          $unset: 'comments',
+        },
       ])
       .exec();
   }
 
   public async findById(id: string): Promise<DocumentType<OfferEntity> | null> {
-    const offer = await this.offerModel.findById(id);
+    const offer = await this.offerModel.findById(id).exec();
 
     if (!offer) {
       return null;
