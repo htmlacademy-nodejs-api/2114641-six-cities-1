@@ -7,19 +7,12 @@ import { CommentEntity } from './comment.entity.js';
 import { COMMENTS_LIMIT } from './comment.constants.js';
 import { SortType } from '../../types/sort.type.js';
 
-import { OfferServiceInterface } from '../offer/offer-service.interface.js';
-
 @injectable()
 export class CommentService implements CommentServiceInterface {
-  constructor(
-    @inject(AppComponent.CommentModel) private readonly commentModel: types.ModelType<CommentEntity>,
-    @inject(AppComponent.OfferServiceInterface) private readonly offerService: OfferServiceInterface,
-  ) {}
+  constructor(@inject(AppComponent.CommentModel) private readonly commentModel: types.ModelType<CommentEntity>) {}
 
   public async create(dto: CreateCommentDto): Promise<DocumentType<CommentEntity>> {
     const comment = await this.commentModel.create(dto);
-
-    await this.offerService.incCommentCount(dto.offerId);
 
     return comment.populate(['userId', 'offerId']);
   }
@@ -37,5 +30,17 @@ export class CommentService implements CommentServiceInterface {
     const result = await this.commentModel.deleteMany({ offerId }).exec();
 
     return result.deletedCount;
+  }
+
+  public async getRatingByOfferId(offerId: string): Promise<number> {
+    const result = await this.commentModel.find({ offerId }).exec();
+
+    if (result.length === 0) {
+      return 0;
+    }
+
+    const rating = result.reduce((acc, item) => (acc += item.rating), 0) / result.length;
+
+    return rating;
   }
 }

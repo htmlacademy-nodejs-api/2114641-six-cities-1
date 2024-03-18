@@ -23,8 +23,66 @@ export class OfferService implements OfferServiceInterface {
     return result;
   }
 
+  public async findPremiumByCity(city: string): Promise<DocumentType<OfferEntity>[]> {
+    return await this.offerModel
+      .aggregate([
+        {
+          $match: {
+            city: {
+              $regex: city,
+              $options: 'i',
+            },
+            premium: {
+              $eq: true,
+            },
+          },
+        },
+        {
+          $lookup: {
+            from: 'comments',
+            let: {
+              offerId: '$_id',
+            },
+            pipeline: [
+              {
+                $match: {
+                  $expr: {
+                    $eq: ['$$offerId', '$offerId'],
+                  },
+                },
+              },
+              {
+                $project: {
+                  _id: 1,
+                  rating: 1,
+                },
+              },
+            ],
+            as: 'comments',
+          },
+        },
+        {
+          $addFields: {
+            rating: {
+              $avg: '$comments.rating',
+            },
+          },
+        },
+        {
+          $unset: 'comments',
+        },
+      ])
+      .exec();
+  }
+
   public async findById(id: string): Promise<DocumentType<OfferEntity> | null> {
-    return await this.offerModel.findById(id).populate(['userId', 'comments']).exec();
+    const offer = await this.offerModel.findById(id).exec();
+
+    if (!offer) {
+      return null;
+    }
+
+    return offer;
   }
 
   public async deleteById(id: string): Promise<DocumentType<OfferEntity> | null> {
@@ -38,19 +96,11 @@ export class OfferService implements OfferServiceInterface {
   public async updateById(id: string, dto: UpdateOfferDto): Promise<DocumentType<OfferEntity> | null> {
     const result = await this.offerModel.findByIdAndUpdate(id, dto, { new: true }).populate(['userId']).exec();
 
+    const updatedOffer = await this.findById(id);
+
     this.logger.info(`Offer ${result?.id} updated`);
 
-    return result;
-  }
-
-  public async incCommentCount(offerId: string): Promise<DocumentType<OfferEntity> | null> {
-    return this.offerModel
-      .findByIdAndUpdate(offerId, {
-        $inc: {
-          commentCount: 1,
-        },
-      })
-      .exec();
+    return updatedOffer;
   }
 
   public async findOffersList(count?: number): Promise<DocumentType<OfferEntity>[]> {
