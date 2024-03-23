@@ -23,6 +23,10 @@ export class OfferService implements OfferServiceInterface {
     return result;
   }
 
+  public async exists(documentId: string): Promise<boolean> {
+    return (await this.offerModel.exists({ _id: documentId })) !== null;
+  }
+
   public async findPremiumByCity(city: string): Promise<DocumentType<OfferEntity>[]> {
     return await this.offerModel
       .aggregate([
