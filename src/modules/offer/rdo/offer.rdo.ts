@@ -34,7 +34,7 @@ export class OfferRdo {
   public numberOfGuests!: number;
 
   @Expose()
-  public coast!: number;
+  public cost!: number;
 
   @Expose()
   public propertyType!: string;

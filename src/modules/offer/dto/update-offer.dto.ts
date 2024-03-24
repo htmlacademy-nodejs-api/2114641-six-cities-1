@@ -34,7 +34,7 @@ export class UpdateOfferDto {
   @IsOptional()
   @IsInt({ message: 'Price must be an integer' })
   @Min(100, { message: 'Minimum price is 100' })
-  public coast?: number;
+  public cost?: number;
 
   @IsOptional()
   @IsArray({ message: 'Field amenities must be an array' })

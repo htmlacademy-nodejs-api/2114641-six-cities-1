@@ -31,7 +31,7 @@ export class CreateOfferDto {
 
   @IsInt({ message: 'Price must be an integer' })
   @Min(100, { message: 'Minimum price is 100' })
-  public coast!: number;
+  public cost!: number;
 
   @IsEnum(PropertyType, { message: 'type must be PropertyType' })
   public propertyType!: PropertyType;

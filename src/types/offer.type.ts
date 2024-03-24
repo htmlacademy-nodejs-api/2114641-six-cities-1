@@ -14,7 +14,7 @@ export type Offer = {
   rating: number;
   numberOfRooms: number;
   numberOfGuests: number;
-  coast: number;
+  cost: number;
   propertyType: PropertyType;
   commentsCount: number;
   location: Location;

@@ -46,7 +46,7 @@ export class OfferEntity extends defaultClasses.TimeStamps {
   public numberOfGuests!: number;
 
   @prop({ required: true })
-  public coast!: number;
+  public cost!: number;
 
   @prop({ required: true })
   public propertyType!: PropertyType;

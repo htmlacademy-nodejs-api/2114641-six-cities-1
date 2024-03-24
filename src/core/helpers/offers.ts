@@ -14,7 +14,7 @@ export function createOffer(offerData: string): Offer {
     rating,
     numberOfRooms,
     numberOfGuests,
-    coast,
+    cost,
     propertyType,
     createdBy,
     commentsCount,
@@ -33,7 +33,7 @@ export function createOffer(offerData: string): Offer {
     rating: Number.parseFloat(rating),
     numberOfRooms: Number.parseInt(numberOfRooms, 10),
     numberOfGuests: Number.parseInt(numberOfGuests, 10),
-    coast: Number.parseFloat(coast),
+    cost: Number.parseFloat(cost),
     propertyType: propertyType as PropertyType,
     commentsCount: Number.parseInt(commentsCount, 10),
     location: (() => {

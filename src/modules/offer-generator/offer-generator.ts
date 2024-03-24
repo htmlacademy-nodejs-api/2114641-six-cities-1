@@ -26,7 +26,7 @@ export default class OfferGenerator implements OfferGeneratorInterface {
     const rating = generateRandomValue(Rating.Min, Rating.Max, 1).toString();
     const numberOfRooms = generateRandomValue(Guests.Min, Guests.Max).toString();
     const numberOfGuests = generateRandomValue(Rooms.Min, Rooms.Max).toString();
-    const coast = generateRandomValue(Price.Min, Price.Max).toString();
+    const cost = generateRandomValue(Price.Min, Price.Max).toString();
     const commentsCount = FALSE_VALUE;
 
     return [
@@ -40,7 +40,7 @@ export default class OfferGenerator implements OfferGeneratorInterface {
       rating,
       numberOfRooms,
       numberOfGuests,
-      coast,
+      cost,
       propertyType,
       createdBy,
       commentsCount,
