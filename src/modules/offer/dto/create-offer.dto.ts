@@ -1,6 +1,6 @@
 import { Amenity } from '../../../types/amenity.enum';
 import { Location } from '../../../types/location.type';
-import { PropertyType } from '../../../types/property.enum';
+import { PropertyType } from '../../../types/property.enum.js';
 import { IsArray, IsEnum, IsInt, IsMongoId, MaxLength, Min, MinLength, IsBoolean } from 'class-validator';
 
 export class CreateOfferDto {

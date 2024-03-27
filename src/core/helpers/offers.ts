@@ -1,5 +1,5 @@
 import { Offer } from '../../types/offer.type';
-import { PropertyType } from '../../types/property.enum';
+import { PropertyType } from '../../types/property.enum.js';
 import { Amenity } from '../../types/amenity.enum';
 
 export function createOffer(offerData: string): Offer {

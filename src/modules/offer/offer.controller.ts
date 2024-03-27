@@ -7,7 +7,7 @@ import { HttpMethod } from '../../types/http-method.enum.js';
 import { OfferServiceInterface } from './offer-service.interface.js';
 import { fillDTO } from '../../core/helpers/index.js';
 import { OfferRdo } from './rdo/offer.rdo.js';
-import { CreateOfferDto } from './dto/create-offer.dto';
+import { CreateOfferDto } from './dto/create-offer.dto.js';
 import { UpdateOfferDto } from './dto/update-offer.dto.js';
 import { HttpError } from '../../core/errors/http-error.js';
 import { StatusCodes } from 'http-status-codes';
