@@ -1,6 +1,6 @@
 import { Amenity } from './amenity.enum';
 import { Location } from './location.type';
-import { PropertyType } from './property.enum';
+import { PropertyType } from './property.enum.js';
 import { User } from './user.type.js';
 
 export type Offer = {
