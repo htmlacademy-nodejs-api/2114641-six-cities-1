@@ -107,7 +107,7 @@ export class OfferService implements OfferServiceInterface {
     return updatedOffer;
   }
 
-  public async findOffersList(count?: number): Promise<DocumentType<OfferEntity>[]> {
+  public async findOffersList(favoriteList: string[], count?: number): Promise<DocumentType<OfferEntity>[]> {
     const limit = count ?? DEFAULT_OFFER_COUNT;
 
     return await this.offerModel
@@ -145,6 +145,19 @@ export class OfferService implements OfferServiceInterface {
         },
         {
           $unset: 'comments',
+        },
+        {
+          $addFields: {
+            favorite: {
+              $cond: {
+                if: {
+                  $in: ['$_id', favoriteList],
+                },
+                then: true,
+                else: false,
+              },
+            },
+          },
         },
       ])
       .sort({ createdAt: SortType.Down })

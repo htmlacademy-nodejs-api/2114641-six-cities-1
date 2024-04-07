@@ -42,6 +42,5 @@ export class CreateOfferDto {
   @IsEnum({ each: true, message: 'Amenities field must be an array of valid Amenities' })
   public amenities!: Amenity[];
 
-  @IsMongoId({ message: 'userId field must be valid an id' })
   public userId!: string;
 }

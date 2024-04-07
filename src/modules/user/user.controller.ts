@@ -16,6 +16,9 @@ import { LoginUserDto } from './dto/login-user.dto.js';
 import { ValidateDtoMiddleware } from '../../core/middleware/validate-dto.middleware.js';
 import { ValidateObjectIdMiddleware } from '../../core/middleware/validate-objectid.middleware.js';
 import { UploadFileMiddleware } from '../../core/middleware/upload-file.middleware.js';
+import { createJWT } from '../../core/helpers/index.js';
+import { LoggedUserRdo } from './rdo/logged-user.rdo.js';
+import { JWT_ALGORITHM } from './user.constant.js';
 
 @injectable()
 export class UserController extends Controller {
@@ -66,20 +69,41 @@ export class UserController extends Controller {
 
   public async login(
     { body }: Request<Record<string, unknown>, Record<string, unknown>, LoginUserDto>,
-    _res: Response,
+    res: Response,
   ): Promise<void> {
-    const existsUser = await this.userService.findByEmail(body.email);
+    const user = await this.userService.verifyUser(body, this.configService.get('SALT'));
 
-    if (!existsUser) {
-      throw new HttpError(StatusCodes.UNAUTHORIZED, `User with email ${body.email} not found.`, 'UserController');
+    if (!user) {
+      throw new HttpError(StatusCodes.UNAUTHORIZED, 'Unauthorized', 'UserController');
     }
 
-    throw new HttpError(StatusCodes.NOT_IMPLEMENTED, 'Not implemented', 'UserController');
+    const token = await createJWT(JWT_ALGORITHM, this.configService.get('JWT_SECRET'), {
+      email: user.email,
+      id: user.id,
+    });
+
+    this.ok(
+      res,
+      fillDTO(LoggedUserRdo, {
+        email: user.email,
+        token,
+      }),
+    );
   }
 
   public async uploadAvatar(req: Request, res: Response) {
     await this.created(res, {
       filepath: req.file?.path,
     });
+  }
+
+  public async checkAuthenticate({ user: { email } }: Request, res: Response) {
+    const foundedUser = await this.userService.findByEmail(email);
+
+    if (!foundedUser) {
+      throw new HttpError(StatusCodes.UNAUTHORIZED, 'Unauthorized', 'UserController');
+    }
+
+    this.ok(res, fillDTO(LoggedUserRdo, foundedUser));
   }
 }

@@ -12,4 +12,7 @@ export class UserRdo {
 
   @Expose()
   public name!: string;
+
+  @Expose()
+  public favoriteList!: string[];
 }
