@@ -17,6 +17,8 @@ import { CommentServiceInterface } from '../comment/comment-service.interface.js
 import { ValidateObjectIdMiddleware } from '../../core/middleware/validate-objectid.middleware.js';
 import { ValidateDtoMiddleware } from '../../core/middleware/validate-dto.middleware.js';
 import { DocumentExistsMiddleware } from '../../core/middleware/document-exists.middleware.js';
+import { PrivateRouteMiddleware } from '../../core/middleware/private-route.middleware.js';
+import { UserServiceInterface } from '../user/user-service.interface.js';
 
 @injectable()
 export class OfferController extends Controller {
@@ -24,6 +26,7 @@ export class OfferController extends Controller {
     @inject(AppComponent.LoggerInterface) protected readonly logger: LoggerInterface,
     @inject(AppComponent.OfferServiceInterface) private readonly offerService: OfferServiceInterface,
     @inject(AppComponent.CommentServiceInterface) private readonly commentService: CommentServiceInterface,
+    @inject(AppComponent.UserServiceInterface) private readonly userService: UserServiceInterface,
   ) {
     super(logger);
 
@@ -34,7 +37,17 @@ export class OfferController extends Controller {
       path: '/',
       method: HttpMethod.Post,
       handler: this.create,
-      middlewares: [new ValidateDtoMiddleware(CreateOfferDto)],
+      middlewares: [new PrivateRouteMiddleware(), new ValidateDtoMiddleware(CreateOfferDto)],
+    });
+    this.addRoute({
+      path: '/:offerId/addToFavorite',
+      method: HttpMethod.Patch,
+      handler: this.addToFavorite,
+      middlewares: [
+        new PrivateRouteMiddleware(),
+        new ValidateObjectIdMiddleware('offerId'),
+        new DocumentExistsMiddleware(this.offerService, 'Offer', 'offerId'),
+      ],
     });
     this.addRoute({
       path: '/:offerId',
@@ -50,6 +63,7 @@ export class OfferController extends Controller {
       method: HttpMethod.Delete,
       handler: this.delete,
       middlewares: [
+        new PrivateRouteMiddleware(),
         new ValidateObjectIdMiddleware('offerId'),
         new DocumentExistsMiddleware(this.offerService, 'Offer', 'offerId'),
       ],
@@ -59,6 +73,7 @@ export class OfferController extends Controller {
       method: HttpMethod.Patch,
       handler: this.update,
       middlewares: [
+        new PrivateRouteMiddleware(),
         new ValidateObjectIdMiddleware('offerId'),
         new ValidateDtoMiddleware(UpdateOfferDto),
         new DocumentExistsMiddleware(this.offerService, 'Offer', 'offerId'),
@@ -67,12 +82,24 @@ export class OfferController extends Controller {
     this.addRoute({ path: '/:city/premium', method: HttpMethod.Get, handler: this.findPremiumByCity });
   }
 
-  public async index(_req: Request, res: Response): Promise<void> {
-    const offers = await this.offerService.findOffersList();
+  public async index({ user }: Request, res: Response): Promise<void> {
+    const userData = await this.userService.findByEmail(user.email);
+
+    const favoriteList = userData?.favoriteList || [];
+
+    const offers = await this.offerService.findOffersList(favoriteList);
 
     const offersToResponse = fillDTO(OfferRdo, offers);
 
     this.ok(res, offersToResponse);
+  }
+
+  public async addToFavorite({ params, user }: Request<OfferDetailsParams>, res: Response): Promise<void> {
+    const { offerId } = params;
+
+    await this.userService.addOfferToFavorite(user.email, offerId);
+
+    this.noContent(res, null);
   }
 
   public async create(

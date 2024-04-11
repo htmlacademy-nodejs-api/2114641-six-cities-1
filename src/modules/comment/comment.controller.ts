@@ -1,5 +1,6 @@
 import { inject, injectable } from 'inversify';
 import { Request, Response } from 'express';
+import { StatusCodes } from 'http-status-codes';
 import { Controller } from '../../core/controller/controller.abstract.js';
 import { LoggerInterface } from '../../core/logger/logger.interface.js';
 import { AppComponent } from '../../types/app-component.enum.js';
@@ -12,6 +13,8 @@ import { CommentRdo } from './rdo/comment.rdo.js';
 import { CreateCommentDto } from './dto/create-comment.dto.js';
 import { DocumentExistsMiddleware } from '../../core/middleware/document-exists.middleware.js';
 import { OfferServiceInterface } from '../offer/offer-service.interface.js';
+import { HttpError } from '../../core/errors/http-error.js';
+import { PrivateRouteMiddleware } from '../../core/middleware/private-route.middleware.js';
 
 @injectable()
 export class CommentController extends Controller {
@@ -29,6 +32,7 @@ export class CommentController extends Controller {
       method: HttpMethod.Post,
       handler: this.create,
       middlewares: [
+        new PrivateRouteMiddleware(),
         new ValidateObjectIdMiddleware('offerId'),
         new DocumentExistsMiddleware(this.offerService, 'Offer', 'offerId'),
       ],
@@ -43,12 +47,15 @@ export class CommentController extends Controller {
   }
 
   public async create(
-    { body }: Request<Record<string, unknown>, Record<string, unknown>, CreateCommentDto>,
+    { body, user }: Request<Record<string, unknown>, Record<string, unknown>, CreateCommentDto>,
     res: Response,
   ): Promise<void> {
-    const result = this.commentService.create(body);
+    if (!(await this.offerService.exists(body.offerId))) {
+      throw new HttpError(StatusCodes.NOT_FOUND, `Offer with id ${body.offerId} not found.`, 'CommentController');
+    }
 
-    this.created(res, fillDTO(CommentRdo, result));
+    const comment = await this.commentService.create({ ...body, userId: user.id });
+    this.created(res, fillDTO(CommentRdo, comment));
   }
 
   public async findByOfferId({ params }: Request<CommentsParams>, res: Response): Promise<void> {
