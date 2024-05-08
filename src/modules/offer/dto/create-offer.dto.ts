@@ -1,7 +1,7 @@
 import { Amenity } from '../../../types/amenity.enum';
 import { Location } from '../../../types/location.type';
 import { PropertyType } from '../../../types/property.enum.js';
-import { IsArray, IsEnum, IsInt, IsMongoId, MaxLength, Min, MinLength, IsBoolean } from 'class-validator';
+import { IsArray, IsEnum, IsInt, MaxLength, Min, MinLength, IsBoolean } from 'class-validator';
 
 export class CreateOfferDto {
   @MinLength(10, { message: 'Minimum name length must be 10' })
